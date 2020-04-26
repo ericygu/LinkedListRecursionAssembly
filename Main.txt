@@ -1,0 +1,199 @@
+      .global main, Stop, CodeEnd
+      .global DataStart, DataEnd
+      .global Check1, Check2, Check3, Check4, Check5
+      .global head, elem
+
+main:
+	// head = NULL
+	movw	r0, #:lower16:head
+	movt	r0, #:upper16:head
+	mov	r1, #0
+	str	r1, [r0]
+
+Check1:
+	// Insert first element in empty list
+
+	mov	r0, #8
+	bl	malloc			// Alloc 8 bytes of memory for list elem
+					// Return value: r0 = addr of list elem
+
+	movw	r1, #:lower16:elem
+	movt	r1, #:upper16:elem	// r1 = addr of elem
+	str	r0, [r1]		// elem = malloc(8)
+
+	mov	r1, #30
+	str	r1, [r0]		// elem.value = 30
+
+	// Call head = InsertList(head, elem)
+	movw	r0, #:lower16:elem
+	movt	r0, #:upper16:elem
+	ldr	r0, [r0]		// r0 = value in elem
+	push	{r0}			// Pass elem as 2nd param
+	movw	r0, #:lower16:head
+	movt	r0, #:upper16:head	// r0 = addr of head
+	ldr	r0, [r0]		// r0 = value in head
+	push	{r0}			// Pass head as 1st param
+
+      	bl 	InsertList
+	add	sp, sp, #8		// Pop parameters
+
+	movw	r1, #:lower16:head
+	movt	r1, #:upper16:head	// r1 = addr of head
+	str	r0, [r1]		// head = InsertList(head, elem)
+
+
+
+
+Check2:
+	// Insert at head (next base case)
+
+	mov	r0, #8
+	bl	malloc			// Alloc 8 bytes of memory for list elem
+					// Return value: r0 = addr of list elem
+
+	movw	r1, #:lower16:elem
+	movt	r1, #:upper16:elem	// r1 = addr of elem
+	str	r0, [r1]		// elem = malloc(8)
+
+	mov	r1, #50
+	str	r1, [r0]		// elem.value = 50
+
+	// Call head = InsertList(head, elem)
+        movw    r0, #:lower16:elem
+        movt    r0, #:upper16:elem
+        ldr     r0, [r0]                // r0 = value in elem
+        push    {r0}                    // Pass elem as 2nd param
+        movw    r0, #:lower16:head
+        movt    r0, #:upper16:head      // r0 = addr of head
+        ldr     r0, [r0]                // r0 = value in head
+        push    {r0}                    // Pass head as 1st param
+
+
+      	bl 	InsertList
+	add	sp, sp, #8		// Pop parameters
+
+	movw	r1, #:lower16:head
+	movt	r1, #:upper16:head	// r1 = addr of head
+	str	r0, [r1]		// head = InsertList(head, elem)
+
+
+
+Check3:
+	// Insert at tail (recursion)
+
+	mov	r0, #8
+	bl	malloc			// Alloc 8 bytes of memory for list elem
+					// Return value: r0 = addr of list elem
+
+	movw	r1, #:lower16:elem
+	movt	r1, #:upper16:elem	// r1 = addr of elem
+	str	r0, [r1]		// elem = malloc(8)
+
+	mov	r1, #10
+	str	r1, [r0]		// elem.value = 10
+
+	// Call head = InsertList(head, elem)
+        movw    r0, #:lower16:elem
+        movt    r0, #:upper16:elem
+        ldr     r0, [r0]                // r0 = value in elem
+        push    {r0}                    // Pass elem as 2nd param
+        movw    r0, #:lower16:head
+        movt    r0, #:upper16:head      // r0 = addr of head
+        ldr     r0, [r0]                // r0 = value in head
+        push    {r0}                    // Pass head as 1st param
+
+
+      	bl 	InsertList
+	add	sp, sp, #8		// Pop parameters
+
+	movw	r1, #:lower16:head
+	movt	r1, #:upper16:head	// r1 = addr of head
+	str	r0, [r1]		// head = InsertList(head, elem)
+
+
+
+Check4:
+	// Insert in middle
+
+	mov	r0, #8
+	bl	malloc			// Alloc 8 bytes of memory for list elem
+					// Return value: r0 = addr of list elem
+
+	movw	r1, #:lower16:elem
+	movt	r1, #:upper16:elem	// r1 = addr of elem
+	str	r0, [r1]		// elem = malloc(8)
+
+	mov	r1, #40
+	str	r1, [r0]		// elem.value = 40
+
+	// Call head = InsertList(head, elem)
+        movw    r0, #:lower16:elem
+        movt    r0, #:upper16:elem
+        ldr     r0, [r0]                // r0 = value in elem
+        push    {r0}                    // Pass elem as 2nd param
+        movw    r0, #:lower16:head
+        movt    r0, #:upper16:head      // r0 = addr of head
+        ldr     r0, [r0]                // r0 = value in head
+        push    {r0}                    // Pass head as 1st param
+
+
+      	bl 	InsertList
+	add	sp, sp, #8		// Pop parameters
+
+	movw	r1, #:lower16:head
+	movt	r1, #:upper16:head	// r1 = addr of head
+	str	r0, [r1]		// head = InsertList(head, elem)
+
+
+
+Check5:
+	// Insert in middle
+
+	mov	r0, #8
+	bl	malloc			// Alloc 8 bytes of memory for list elem
+					// Return value: r0 = addr of list elem
+
+	movw	r1, #:lower16:elem
+	movt	r1, #:upper16:elem	// r1 = addr of elem
+	str	r0, [r1]		// elem = malloc(8)
+
+	mov	r1, #20
+	str	r1, [r0]		// elem.value = 20
+
+	// Call head = InsertList(head, elem)
+        movw    r0, #:lower16:elem
+        movt    r0, #:upper16:elem
+        ldr     r0, [r0]                // r0 = value in elem
+        push    {r0}                    // Pass elem as 2nd param
+        movw    r0, #:lower16:head
+        movt    r0, #:upper16:head      // r0 = addr of head
+        ldr     r0, [r0]                // r0 = value in head
+        push    {r0}                    // Pass head as 1st param
+
+
+      	bl 	InsertList
+	add	sp, sp, #8		// Pop parameters
+
+	movw	r1, #:lower16:head
+	movt	r1, #:upper16:head	// r1 = addr of head
+	str	r0, [r1]		// head = InsertList(head, elem)
+
+
+
+
+// ====================================================================
+// Don't touch the stop label - you need it to stop the program
+// ====================================================================
+Stop:   nop
+
+CodeEnd:
+        nop
+
+	.data
+DataStart:
+
+head:   .4byte 0
+elem:   .4byte 0
+
+DataEnd:
+        .end

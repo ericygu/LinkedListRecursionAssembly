@@ -1,0 +1,102 @@
+	.global InsertList
+
+InsertList:
+
+// ********************************************************************
+// Put your InsertList function here 
+// ********************************************************************
+/*
+if (h == null)
+            {  
+                e.next = null;
+                return(e);    // New elem is the head
+            }
+*/
+//Prelude
+push    {lr}
+push    {fp}
+mov     fp, sp
+sub     sp, sp, #0
+
+// if ( h == null )
+ldr     r0, [fp, #8]
+cmp     r0, #0
+bne     elseif
+
+//e.next = null
+ldr     r0, [fp, #12]
+mov     r1, #0          // null
+str     r1, [r0, #4]    // e.next = null
+ldr     r0, [fp, #12]   // Set up r0 = return value (e)
+
+//Postlude
+mov     sp, fp
+pop     {fp}
+pop     {pc}
+
+elseif:
+/*
+else if (h.value > e.value) {
+            e.next = h;
+            return(e);
+        }
+*/
+//load h.value
+ldr     r0, [fp, #8]
+ldr     r2, [r0] 
+
+//load e.value
+ldr     r1, [fp, #12]   // r0 = e
+ldr     r3, [r1] 
+
+cmp r2, r3
+ble else
+
+// e.next = h
+str     r0, [r1, #4]    // e.next = h
+// return e
+ldr     r0, [fp, #12]   // Set up r0 = return value(e)
+
+//Postlude
+mov     sp, fp
+pop     {fp}
+pop     {pc}
+
+else:
+/*
+else {
+            // Recursion
+            List help = InsertList(h.next, e);
+            // Insert elem in shorter list
+            h.next = help;  // Link return list AFTER
+            // the first elem in orig. list
+            return (h);      // head is unchanged
+        }
+*/
+// h.next = InsertList(h.next, e);
+
+//// pass e
+ldr     r0, [fp, #12]   // r0 = e
+push    {r0}            // Pass e with stack
+
+// pass h.next
+ldr     r0, [fp, #8]    // r0 = h
+ldr     r0, [r0, #4]    // r0 = h.next
+push    {r0}            // Pass h.next with stack
+
+bl      InsertList
+add     sp, sp, #8      // Clean up 2 parameters
+
+//  Store return value (in r0) in h.next
+ldr     r1, [fp, #8]    // r1 = h
+str     r0, [r1, #4]    // h.next = return value from Insert(h.next,p)
+
+// return(h);
+ldr     r0, [fp, #8]    // Set up r0 = return value (h)
+
+//Postlude
+mov     sp, fp
+pop     {fp}
+pop     {pc}
+
+	.end
